@@ -1,0 +1,22 @@
+{
+    "limit_checks": {
+        "max_rows": 50000,
+        "max_cols": 25,
+        "max_char_count": 100000
+    },
+    "is_managed": null,
+    "allow_data_tracking": true,
+    "spacy_downloads": [
+        "en_core_web_sm",
+        "de_core_web_sm"
+    ],
+    "services": {
+        "NEURAL_SEARCH": "http://refinery-neural-search:80",
+        "WEAK_SUPERVISION": "http://refinery-weak-supervisor:80",
+        "EMBEDDING_SERVICE": "http://refinery-embedder:80",
+        "ZERO_SHOT": "http://refinery-zero-shot:80",
+        "TOKENIZER": "http://refinery-tokenizer:80",
+        "DOC_OCK": "http://refinery-doc-ock:80",
+        "CONFIG": "http://refinery-config:80"
+    }
+}

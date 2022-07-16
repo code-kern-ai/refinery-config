@@ -1,0 +1,46 @@
+#!/bin/bash
+
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     HOST_IP=$(ip a | grep "inet " | grep -v 127.0.0.1 | head -1 | grep -o -E "[0-9]+.[0-9]+.[0-9]+.[0-9]+" | head -1);;
+    Darwin*)    HOST_IP=$(ifconfig | grep "inet " | grep -v 127.0.0.1 | head -1 | grep -o -E "[0-9]+.[0-9]+.[0-9]+.[0-9]+" | head -1);;
+esac
+
+MINIO_ENDPOINT="http://$HOST_IP:7053"
+
+HIDE_BUILD=0
+while getopts :s flag
+do
+    case "${flag}" in
+        s) HIDE_BUILD=1;;
+    esac
+done
+
+
+echo -ne 'stopping old container...'
+docker stop refinery-config > /dev/null 2>&1
+echo -ne '\t [done]\n'
+
+
+echo -ne 'building container...'
+if [ $HIDE_BUILD -eq 1 ]
+then
+  docker build -t refinery-config-dev -f dev.Dockerfile . > /dev/null 2>&1
+else
+  docker build -t refinery-config-dev -f dev.Dockerfile .
+fi
+echo -ne '\t [done]\n'
+
+echo -ne 'starting...'
+docker run -d --rm \
+--name refinery-config \
+-p 7059:80 \
+-e KERN_S3_ENDPOINT=${MINIO_ENDPOINT} \
+-e IS_MANAGED=0 \
+--mount type=bind,source="$(pwd)"/,target=/app \
+-v /var/run/docker.sock:/var/run/docker.sock \
+--network dev-setup_default \
+refinery-config-dev > /dev/null 2>&1
+echo -ne '\t [done]\n'
+docker logs -f refinery-config

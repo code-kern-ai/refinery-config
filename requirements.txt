@@ -1,0 +1,5 @@
+black==22.1.0
+fastapi==0.73.0
+uvicorn==0.17.5
+pydantic==1.8.2
+requests==2.25.1
