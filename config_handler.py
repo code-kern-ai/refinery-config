@@ -17,6 +17,7 @@ def __read_and_change_base_config():
 
     print("transfer os variables", flush=True)
     __config["is_managed"] = os.getenv("IS_MANAGED") == "1"
+    __config["is_demo"] = os.getenv("IS_DEMO") == "1"
     __config["tokens"]["INTERCOM"] = os.getenv("INTERCOM", "")
     __config["s3_region"] = os.getenv("S3_REGION", "eu-west-1")
 

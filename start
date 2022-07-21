@@ -38,6 +38,7 @@ docker run -d --rm \
 -p 7059:80 \
 -e KERN_S3_ENDPOINT=${MINIO_ENDPOINT} \
 -e IS_MANAGED=0 \
+-e IS_DEMO=0 \
 --mount type=bind,source="$(pwd)"/,target=/app \
 -v /var/run/docker.sock:/var/run/docker.sock \
 --network dev-setup_default \
