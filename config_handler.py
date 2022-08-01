@@ -2,7 +2,7 @@ from typing import Dict, Any
 import os
 import json
 
-__blacklist_base_config = ["is_managed", "services_to_notify"]
+__blacklist_base_config = ["is_managed", "is_demo", "services_to_notify"]
 __config = None
 
 BASE_CONFIG_PATH = "base_config.json"
@@ -17,6 +17,7 @@ def __read_and_change_base_config():
 
     print("transfer os variables", flush=True)
     __config["is_managed"] = os.getenv("IS_MANAGED") == "1"
+    __config["is_demo"] = os.getenv("IS_DEMO") == "1"
     __config["tokens"]["INTERCOM"] = os.getenv("INTERCOM", "")
     __config["s3_region"] = os.getenv("S3_REGION", "eu-west-1")
 
