@@ -8,6 +8,7 @@ from notify_handler import notify_others_about_change
 
 init_config()
 app = FastAPI()
+notify_others_about_change(get_config(False)["services_to_notify"])
 
 
 class ChangeRequest(BaseModel):
