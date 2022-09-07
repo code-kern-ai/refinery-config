@@ -1,6 +1,7 @@
 from typing import Dict
 
 import requests
+import traceback
 
 
 def notify_others_about_change(notify: Dict[str, str]) -> None:
@@ -11,5 +12,7 @@ def notify_others_about_change(notify: Dict[str, str]) -> None:
             response = requests.put(url)
             if response.status_code != 200:
                 print("couldn't notify ", key)
-        except requests.exceptions.ConnectionError as e:
+        except requests.exceptions.ConnectionError:
             print("couldn't notify ", key)
+        except Exception:
+            print(traceback.format_exc(), flush=True)
