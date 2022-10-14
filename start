@@ -1,5 +1,5 @@
 #!/bin/bash
-
+trap "echo -ne '\nstopping container...' && docker stop refinery-config > /dev/null 2>&1 && echo -ne '\t\t [done]\n'" EXIT
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
