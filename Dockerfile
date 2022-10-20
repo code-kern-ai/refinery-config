@@ -1,10 +1,10 @@
-FROM python:3.10-alpine
+FROM kernai/refinery-parent-images:v0.0.1-mini
 
 WORKDIR /program
 
 COPY requirements.txt .
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY / .
 
