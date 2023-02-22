@@ -3,12 +3,12 @@ from pydantic import BaseModel
 from config_handler import init_config, get_config, change_config
 import json
 
-from notify_handler import notify_others_about_change
+from notify_handler import notify_others_about_change_thread
 
 
 init_config()
 app = FastAPI()
-notify_others_about_change(get_config(False)["services_to_notify"])
+notify_others_about_change_thread(get_config(False)["services_to_notify"])
 
 
 class ChangeRequest(BaseModel):
@@ -18,7 +18,7 @@ class ChangeRequest(BaseModel):
 @app.post("/change_config")
 def change(request: ChangeRequest) -> int:
     if change_config(json.loads(request.dict_string)):
-        notify_others_about_change(get_config(False)["services_to_notify"])
+        notify_others_about_change_thread(get_config(False)["services_to_notify"])
     return 200, None
 
 

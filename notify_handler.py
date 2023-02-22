@@ -2,6 +2,7 @@ from typing import Dict
 
 import requests
 import traceback
+import daemon
 
 
 def notify_others_about_change(notify: Dict[str, str]) -> None:
@@ -11,8 +12,13 @@ def notify_others_about_change(notify: Dict[str, str]) -> None:
         try:
             response = requests.put(url)
             if response.status_code != 200:
-                print("couldn't notify ", key)
+                print("couldn't notify", key, flush=True)
         except requests.exceptions.ConnectionError:
-            print("couldn't notify ", key)
+            print("couldn't notify", key, flush=True)
         except Exception:
             print(traceback.format_exc(), flush=True)
+
+
+def notify_others_about_change_thread(notify: Dict[str, str]) -> None:
+    # needs to be threaded to work with circular requests (this notifies about changes -> service requests full config from this)
+    daemon.run(notify_others_about_change, notify)
