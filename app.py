@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, responses, status
 from pydantic import BaseModel
 from config_handler import init_config, get_config, change_config
 import json
@@ -16,17 +16,21 @@ class ChangeRequest(BaseModel):
 
 
 @app.post("/change_config")
-def change(request: ChangeRequest) -> int:
+def change(request: ChangeRequest) -> responses.PlainTextResponse:
     if change_config(json.loads(request.dict_string)):
         notify_others_about_change_thread(get_config(False)["services_to_notify"])
-    return 200, None
+    return responses.PlainTextResponse(status_code=status.HTTP_200_OK)
 
 
 @app.get("/full_config")
-def full_config() -> str:
-    return json.dumps(get_config(False))
+def full_config() -> responses.JSONResponse:
+    return responses.JSONResponse(
+        status_code=status.HTTP_200_OK, content=get_config(False)
+    )
 
 
 @app.get("/base_config")
-def base_config() -> str:
-    return json.dumps(get_config(True))
+def base_config() -> responses.JSONResponse:
+    return responses.JSONResponse(
+        status_code=status.HTTP_200_OK, content=get_config(True)
+    )
