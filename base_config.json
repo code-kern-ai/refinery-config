@@ -16,7 +16,8 @@
         "TOKENIZER": "http://refinery-tokenizer:80",
         "DOC_OCK": "http://refinery-doc-ock:80",
         "EMBEDDER": "http://refinery-embedder:80",
-        "ZERO_SHOT": "http://refinery-zero-shot:80"
+        "ZERO_SHOT": "http://refinery-zero-shot:80",
+        "UPDATER": "http://refinery-updater:80"
     },
     "tokens": {
         "INTERCOM": ""
