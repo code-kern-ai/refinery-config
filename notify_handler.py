@@ -12,7 +12,7 @@ def notify_others_about_change(notify: Dict[str, str]) -> None:
         try:
             response = requests.put(url)
             if response.status_code != 200:
-                print("couldn't notify", key, flush=True)
+                print(f"couldn't notify - code:{response.status_code}", key, flush=True)
         except requests.exceptions.ConnectionError:
             print("couldn't notify", key, flush=True)
         except Exception:
