@@ -34,3 +34,9 @@ def base_config() -> responses.JSONResponse:
     return responses.JSONResponse(
         status_code=status.HTTP_200_OK, content=get_config(True)
     )
+
+
+@app.get("/healthcheck")
+def healthcheck() -> responses.PlainTextResponse:
+    headers = {"APP": "OK"}
+    return responses.PlainTextResponse("OK", headers=headers)
