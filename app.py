@@ -38,5 +38,4 @@ def base_config() -> responses.JSONResponse:
 
 @app.get("/healthcheck")
 def healthcheck() -> responses.PlainTextResponse:
-    headers = {"APP": "OK"}
-    return responses.PlainTextResponse("OK", headers=headers)
+    return responses.PlainTextResponse("OK")
