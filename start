@@ -41,6 +41,7 @@ docker run -d --rm \
 -e IS_DEMO=0 \
 --mount type=bind,source="$(pwd)"/,target=/app \
 -v /var/run/docker.sock:/var/run/docker.sock \
+-v base-config:/base-config \
 --network dev-setup_default \
 refinery-config-dev > /dev/null 2>&1
 echo -ne '\t [done]\n'
