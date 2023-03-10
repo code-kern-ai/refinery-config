@@ -5,8 +5,8 @@ import json
 __blacklist_base_config = ["is_managed", "is_demo", "services_to_notify"]
 __config = None
 
-BASE_CONFIG_PATH = "/base-config/base_config.json"
-CURRENT_CONFIG_PATH = "current_config.json"
+BASE_CONFIG_PATH = "base_config.json"
+CURRENT_CONFIG_PATH = "/config/current_config.json"
 
 
 def __read_and_change_base_config():
