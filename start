@@ -18,6 +18,20 @@ do
 done
 
 
+CONFIG_DIR=${PWD%/*}/dev-setup/config/
+if [ ! -d "$CONFIG_DIR" ] 
+then
+    CONFIG_DIR=${PWD%/*/*}/dev-setup/config/
+    if [ ! -d "$CONFIG_DIR" ] 
+    then
+        # to include volume for local development, use the dev-setup inference folder:  
+        # alternative use manual logic with
+        # -v /path/to/dev-setup/config:/config \
+        echo "Can't find config directory: $CONFIG_DIR -> stopping" 
+        exit 1
+    fi
+fi
+
 echo -ne 'stopping old container...'
 docker stop refinery-config > /dev/null 2>&1
 echo -ne '\t [done]\n'
@@ -41,6 +55,7 @@ docker run -d --rm \
 -e IS_DEMO=0 \
 --mount type=bind,source="$(pwd)"/,target=/app \
 -v /var/run/docker.sock:/var/run/docker.sock \
+-v "$CONFIG_DIR":/config \
 --network dev-setup_default \
 refinery-config-dev > /dev/null 2>&1
 echo -ne '\t [done]\n'
