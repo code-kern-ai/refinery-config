@@ -2,11 +2,19 @@ from typing import Dict, Any
 import os
 import json
 
-__blacklist_base_config = ["is_managed", "is_demo", "services_to_notify"]
+__blacklist_base_config = ["is_managed", "is_demo"]
 __config = None
 
 BASE_CONFIG_PATH = "base_config.json"
 CURRENT_CONFIG_PATH = "/config/current_config.json"
+
+SERVICES_TO_NOTIFY = {
+    "EMBEDDER": "http://refinery-embedder:80",
+    "UPDATER": "http://refinery-updater:80",
+    "ZERO_SHOT": "http://refinery-zero-shot:80",
+    "TOKENIZER": "http://refinery-tokenizer:80",
+    "DOC_OCK": "http://refinery-doc-ock:80",
+}
 
 
 def __read_and_change_base_config():
@@ -56,12 +64,30 @@ def init_config() -> None:
     if not os.path.exists(CURRENT_CONFIG_PATH):
         __read_and_change_base_config()
     else:
-        global __config
-        f = open(CURRENT_CONFIG_PATH)
-        __config = json.load(f)
+        __load_and_remove_outdated_config_keys()
     # this one is to be set on every start to ensure its up to date
     print("setting s3 endpoint", flush=True)
     __config["KERN_S3_ENDPOINT"] = os.getenv("KERN_S3_ENDPOINT")
+
+
+def __load_and_remove_outdated_config_keys():
+    if not os.path.exists(CURRENT_CONFIG_PATH):
+        return
+
+    global __config
+    with open(CURRENT_CONFIG_PATH) as f:
+        __config = json.load(f)
+
+    with open(BASE_CONFIG_PATH) as f:
+        base_config = json.load(f)
+
+    to_remove = [key for key in __config if key not in base_config]
+
+    if len(to_remove) > 0:
+        print("removing outdated config keys", to_remove, flush=True)
+        for key in to_remove:
+            del __config[key]
+        __save_current_config()
 
 
 def get_config(basic: bool = True) -> Dict[str, Any]:
