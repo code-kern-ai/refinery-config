@@ -11,9 +11,7 @@ CURRENT_CONFIG_PATH = "/config/current_config.json"
 SERVICES_TO_NOTIFY = {
     "EMBEDDER": "http://refinery-embedder:80",
     "UPDATER": "http://refinery-updater:80",
-    "ZERO_SHOT": "http://refinery-zero-shot:80",
     "TOKENIZER": "http://refinery-tokenizer:80",
-    "DOC_OCK": "http://refinery-doc-ock:80",
 }
 
 
